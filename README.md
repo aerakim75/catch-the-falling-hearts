@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Catch the Falling Hearts 💖</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background: #fff0f5;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 20px;
+      color: #d63384;
+    }
+
+    #gameArea {
+      position: relative;
+      width: 400px;
+      height: 500px;
+      margin: 20px auto;
+      background-color: #ffe6f0;
+      border: 4px solid #ffb6c1;
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    #basket {
+      position: absolute;
+      bottom: 10px;
+      font-size: 36px;
+      transition: left 0.1s ease;
+    }
+
+    #heart {
+      position: absolute;
+      top: 0;
+      left: 100px;
+      font-size: 30px;
+    }
+
+    p {
+      font-size: 20px;
+      color: #ff69b4;
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Catch the Hearts!</h1>
+  <div id="gameArea">
+    <div id="basket">🧺</div>
+    <div id="heart">💗</div>
+  </div>
+  <p>Score: <span id="score">0</span></p>
+
+  <script>
+    const basket = document.getElementById("basket");
+    const heart = document.getElementById("heart");
+    const scoreDisplay = document.getElementById("score");
+
+    let score = 0;
+    let basketPosition = 180;
+    let heartTop = 0;
+    let heartLeft = Math.floor(Math.random() * 370);
+
+    // Update basket position based on mouse movement
+    document.addEventListener("mousemove", (e) => {
+      let mouseX = e.clientX - gameArea.offsetLeft;
+      if (mouseX >= 0 && mouseX <= 360) {
+        basketPosition = mouseX - 20; // Center basket on mouse
+        basket.style.left = basketPosition + "px";
+      }
+    });
+
+    function dropHeart() {
+      heartTop += 5;
+      heart.style.top = heartTop + "px";
+      heart.style.left = heartLeft + "px";
+
+      if (heartTop >= 460) {
+        if (heartLeft >= basketPosition - 20 && heartLeft <= basketPosition + 40) {
+          score++;
+          scoreDisplay.textContent = score;
+        }
+        resetHeart();
+      }
+
+      requestAnimationFrame(dropHeart);
+    }
+
+    function resetHeart() {
+      heartTop = 0;
+      heartLeft = Math.floor(Math.random() * 370);
+      heart.style.top = heartTop + "px";
+    }
+
+    dropHeart();
+  </script>
+</body>
+</html>
